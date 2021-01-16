@@ -1,0 +1,40 @@
+/*
+import Vuex from "vuex";
+import VueRouter from "vue-router";
+import Vuetify from "vuetify";
+import { VCard } from "vuetify/lib";
+import { shallowMount, createLocalVue } from "@vue/test-utils";
+import Searchbar from "@/components/Searchbar";
+
+describe("Searchbar.vue", () => {
+    let vuetify;
+    let router;
+    const localVue = createLocalVue();
+    localVue.use(VueRouter);
+    localVue.use(Vuex);
+
+    beforeEach(() => {
+        // There is a lot of repeated code in these tests
+        // using beforeEach for that code will break tests
+        // this seems to be due to issues with Vuetify 2. Fixed in 3.
+        vuetify = new Vuetify();
+        router = new VueRouter();
+    });
+
+    it("should have a v-card as the root element", () => {
+        const mutations = {
+            SET_QUERY: jest.fn()
+        };
+        const store = new Vuex.Store({
+            mutations
+        });
+        const wrapper = shallowMount(Home, {
+            localVue,
+            vuetify,
+            store,
+            router
+        });
+        expect(wrapper.findComponent(VCard)).toEqual(header);
+    });
+});
+*/

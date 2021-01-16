@@ -1,0 +1,19 @@
+timeout: "1600s"
+steps:
+  - name: node:15.5.1
+    entrypoint: yarn
+    args: ["install"]
+  - name: node:15.5.1
+    entrypoint: yarn
+    args: [ "run", "create-env" ]
+    env:
+      - 'ZDS_API_KEY=$_ZDS_API_KEY'
+      - 'ZDS_CX_TOKEN=$_ZDS_CX_TOKEN'
+  - name: node:15.5.1
+    entrypoint: yarn
+    args: [ 'run', 'test:unit' ]
+  - name: node:15.5.1
+    entrypoint: yarn
+    args: ["run", "build"]
+  - name: "gcr.io/cloud-builders/gcloud"
+    args: ["app", "deploy"]
