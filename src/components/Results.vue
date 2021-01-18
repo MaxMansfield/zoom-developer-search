@@ -2,7 +2,7 @@
   <div
     v-infinite-scroll="scroll"
     infinite-scroll-disabled="searching"
-    infinite-scroll-distance="50"
+    infinite-scroll-distance="25"
   >
     <div v-for="(page, i) in pages" :key="i">
       <v-card
