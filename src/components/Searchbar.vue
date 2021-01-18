@@ -26,7 +26,7 @@
             :close-on-content-click="false"
           >
             <template v-slot:activator="{ on, attrs }">
-              <v-btn icon large v-bind="attrs" v-on="on">
+              <v-btn class="float-right " icon large v-bind="attrs" v-on="on">
                 <v-icon>mdi-dots-vertical</v-icon>
               </v-btn>
             </template>
