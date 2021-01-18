@@ -143,7 +143,7 @@
           color="white"
           indeterminate
         ></v-progress-circular>
-        <span v-else-if="pages[i] !== undefined && page.length === 10"
+        <span v-else-if="pages[i] !== undefined && pages.length !== i + 1"
           >Page {{ i + 2 }}</span
         >
       </div>
@@ -152,7 +152,7 @@
 </template>
 
 <script>
-import { mapState, mapActions } from "vuex";
+import { mapState, mapActions, mapGetters } from "vuex";
 import moment from "moment";
 
 export default {
@@ -208,6 +208,7 @@ export default {
     ...mapActions("search", ["search"])
   },
   computed: {
+    ...mapGetters("search", ["hasNextPage"]),
     ...mapState({
       searching: state => state.search.searching,
       pages: state => state.search.pages,

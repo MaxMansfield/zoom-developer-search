@@ -1,39 +1,42 @@
+import { cacheAction } from "vuex-cache";
+
 const state = {
-  sources: {
-    marketplace: true,
-    forum: true,
-    help: true
-  }
+  pagination: false
 };
 
 const mutations = {
   /**
-   * Enables/disables the Marketplace as a search source
+   * Enables/disables pagination
    * @param state the state to manipulate
-   * @param isEnabled set to false to disable the marketplace source
+   * @param isEnabled set to true to enable pagination
    */
-  SET_MARKETPLACE_SOURCE(state, isEnabled) {
-    if (typeof isEnabled === "boolean") state.sources.marketplace = isEnabled;
-  },
-  /**
-   * Enables/disables the Forum as a search source
-   * @param state the state to manipulate
-   * @param isEnabled set to false to disable the forum source
-   */
-  SET_FORUM_SOURCE(state, isEnabled) {
-    if (typeof isEnabled === "boolean") state.sources.forum = isEnabled;
-  },
-  /**
-   * Enables/disables the help as a search source
-   * @param state the state to manipulate
-   * @param isEnabled set to false to disable the help source
-   */
-  SET_HELP_SOURCE(state, isEnabled) {
-    if (typeof isEnabled === "boolean") state.sources.help = isEnabled;
+  SET_PAGINATION(state, isEnabled) {
+    if (typeof isEnabled === "boolean") state.pagination = isEnabled;
   }
 };
 
-const actions = {};
+const actions = {
+  clearCache: cacheAction(({ cache, dispatch }) => {
+    // Clear the vuex-cache
+    cache.clear();
+
+    // Clear the service-worker cache
+    caches
+      .keys()
+      .then(function(names) {
+        for (let name of names)
+          caches.delete(name).catch(e => {
+            return dispatch("bus/error", e.message, { root: true });
+          });
+
+        //refresh the page without the cache
+        window.location.reload(true);
+      })
+      .catch(e => {
+        return dispatch("bus/error", e.message, { root: true });
+      });
+  })
+};
 
 export default {
   namespaced: true,

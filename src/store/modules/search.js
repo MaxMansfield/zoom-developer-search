@@ -8,6 +8,12 @@ const state = {
   pages: []
 };
 
+const getters = {
+  hasNextPage: state => {
+    return state.nextPage !== undefined;
+  }
+};
+
 const mutations = {
   /**
    * set the search query
@@ -24,6 +30,13 @@ const mutations = {
    */
   SET_NEXT_PAGE(state, nextPage) {
     if (typeof nextPage === "object") state.nextPage = nextPage;
+  },
+  /**
+   * clear the nextPage object
+   * @param state the state to use
+   */
+  CLEAR_NEXT_PAGE(state) {
+    state.nextPage = undefined;
   },
   /**
    * add a page to the pages array
@@ -56,56 +69,77 @@ const actions = {
    * @param commit the object to commit mutations
    * @param dispatch the object to dispatch actions
    * @param query the query to search
-   * @param isNextPage if the nextPage object should be used
+   * @param useNextPage if the nextPage object should be used
    */
-  search: cacheAction(({ cache, commit, dispatch }, useNextPage = false) => {
-    const KEY = process.env.VUE_APP_API_KEY;
-    const CX = process.env.VUE_APP_CX;
-    let URL = `https://www.googleapis.com/customsearch/v1?key=${KEY}&cx=${CX}`;
+  search: cacheAction(
+    ({ cache, commit, dispatch, getters }, useNextPage = false) => {
+      let start = 0;
+      useNextPage &= getters.hasNextPage;
 
-    if (useNextPage) {
-      let start = state.nextPage.startIndex;
-      let num = state.nextPage.count;
+      if (useNextPage) {
+        start = state.nextPage.startIndex;
+        const num = state.nextPage.num;
+        const totalResults = state.nextPage.totalResults;
 
-      if (start >= 100 || state.pages.length === 10) {
-        return;
-      } else {
-        URL += `&start=${start}&num=${num}`;
-        commit("SET_QUERY", state.nextPage.searchTerms);
-      }
-    } else {
-      commit("CLEAR_PAGES");
-    }
+        const isDone = start + num > totalResults;
+        const isAtLimit = start >= 100 || state.pages.length >= 10;
 
-    URL += `&q=${state.query}`;
+        if (isDone || isAtLimit) return;
+      } else commit("CLEAR_PAGES");
 
-    commit("SET_SEARCHING", true);
+      commit("CLEAR_NEXT_PAGE");
+      if (state.query === undefined || start === undefined) return;
 
-    cache
-      .dispatch("request", URL)
-      .then(r => {
-        commit("ADD_PAGE", r.data.items);
+      commit("SET_SEARCHING", true);
 
-        let nextPage = r.data.queries.nextPage;
-        if (nextPage !== undefined) commit("SET_NEXT_PAGE", nextPage[0]);
+      let payload = {
+        q: state.query,
+        start: start
+      };
 
-        commit("SET_SEARCHING", false);
-      })
-      .catch(e => {
-        commit("SET_SEARCHING", false);
-        dispatch("bus/error", e.message, {
-          root: true
+      cache
+        .dispatch("get", payload)
+        .then(r => {
+          if (r.data === undefined) return;
+
+          commit("ADD_PAGE", r.data.items);
+
+          let nextPage = r.data.queries.nextPage;
+
+          if (nextPage === undefined) commit("CLEAR_NEXT_PAGE");
+          else commit("SET_NEXT_PAGE", nextPage[0]);
+
+          commit("SET_SEARCHING", false);
+        })
+        .catch(e => {
+          commit("SET_SEARCHING", false);
+          commit("CLEAR_NEXT_PAGE");
+          return dispatch("bus/error", e.message, {
+            root: true
+          });
         });
-      });
-  }),
-  request(_, URL) {
-    return axios.get(URL);
+    }
+  ),
+  get(_, { q, start }) {
+    const endpoint = "https://www.googleapis.com/customsearch/v1";
+    const key = process.env.VUE_APP_API_KEY;
+    const cx = process.env.VUE_APP_CX;
+
+    return axios.get(endpoint, {
+      params: {
+        q,
+        start,
+        cx,
+        key
+      }
+    });
   }
 };
 
 export default {
   namespaced: true,
   state,
+  getters,
   mutations,
   actions
 };

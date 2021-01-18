@@ -13,10 +13,43 @@
         required
         return-object
         v-model="query"
+        @keyup="startDebounce"
       ></v-text-field>
-      <v-btn icon>
-        <v-icon>mdi-dots-vertical</v-icon>
-      </v-btn>
+      <v-menu bottom right nudge-right="25px" :close-on-content-click="false">
+        <template v-slot:activator="{ on, attrs }">
+          <v-btn icon v-bind="attrs" v-on="on">
+            <v-icon>mdi-dots-vertical</v-icon>
+          </v-btn>
+        </template>
+
+        <v-list flat subheader three-line>
+          <v-subheader>Actions</v-subheader>
+
+          <v-list-item-group multiple active-class="">
+            <v-list-item @click="clearCache">
+              <template v-slot:default="{ active }">
+                <v-list-item-action>
+                  <v-btn
+                    @click="clearCache"
+                    icon
+                    color="primary"
+                    :input-value="active"
+                    ><v-icon>mdi-cached</v-icon></v-btn
+                  >
+                </v-list-item-action>
+
+                <v-list-item-content>
+                  <v-list-item-title>Start Fresh!</v-list-item-title>
+                  <v-list-item-subtitle
+                    >Clear the app and search data from your
+                    device</v-list-item-subtitle
+                  >
+                </v-list-item-content>
+              </template>
+            </v-list-item>
+          </v-list-item-group>
+        </v-list>
+      </v-menu>
     </v-card-actions>
   </v-card>
 </template>
@@ -27,45 +60,51 @@ export default {
   name: "Searchbar",
   data: () => ({
     typingTimer: null,
-    query: "",
     rules: {
       length: v => {
         if (v === undefined || v === null) return true;
-        return v.length >= 2 || "Please type more than 2 characters";
+        return v.length > 2 || "Please type more than 2 characters";
       }
     }
   }),
   methods: {
-    clearQuery() {
-      this.query = "";
-    },
-    ...mapActions("search", ["search"])
-  },
-  computed: {
-    ...mapState({
-      searching: state => state.search.searching
-    })
-  },
-  watch: {
-    query(val) {
+    startDebounce() {
       const isInvalid =
-        val === null || val === undefined || val.length <= 2 || val === "";
+        this.query === null ||
+        this.query === undefined ||
+        this.query.length <= 2 ||
+        this.query === "";
 
       // exit
       if (isInvalid || this.searching) return;
 
       // restart the timer
-      if (this.typingTimer !== null) {
-        clearTimeout(this.typingTimer);
-      }
+      if (this.typingTimer !== null) clearTimeout(this.typingTimer);
 
       this.typingTimer = setTimeout(() => {
-        this.$store.commit("search/SET_QUERY", val);
         this.search();
         clearTimeout(this.typingTimer);
         this.typingTimer = null;
       }, 250);
-    }
+    },
+    clearQuery() {
+      this.query = "";
+    },
+    ...mapActions("search", ["search"]),
+    ...mapActions("settings", ["clearCache"])
+  },
+  computed: {
+    query: {
+      get() {
+        return this.$store.state.search.query;
+      },
+      set(v) {
+        this.$store.commit("search/SET_QUERY", v);
+      }
+    },
+    ...mapState({
+      searching: state => state.search.searching
+    })
   }
 };
 </script>

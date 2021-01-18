@@ -23,9 +23,7 @@ export default {
     let query = this.$route.query.q;
     if (query === undefined || query === "") return;
     this.$store.commit("search/SET_QUERY", query);
-    this.$store.dispatch("search/search").catch(e => {
-      console.error(`Unable to search query ${query}`, e);
-    });
+    this.$store.dispatch("search/search");
   },
   components: {
     Results,
