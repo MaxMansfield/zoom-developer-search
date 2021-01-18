@@ -1,5 +1,5 @@
 import Vue from "vue";
-import Vuetify, { VSnackbar, VBtn, VIcon } from "vuetify/lib";
+import Vuetify from "vuetify/lib";
 import VuetifyToast from "vuetify-toast-snackbar";
 
 const opts = {
@@ -16,13 +16,7 @@ const opts = {
   }
 };
 
-Vue.use(Vuetify, {
-  components: {
-    VSnackbar,
-    VBtn,
-    VIcon
-  }
-});
+Vue.use(Vuetify);
 
 const V = new Vuetify(opts);
 
