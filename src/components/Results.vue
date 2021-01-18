@@ -2,7 +2,7 @@
   <div
     v-infinite-scroll="scroll"
     infinite-scroll-disabled="searching"
-    infinite-scroll-distance="25"
+    infinite-scroll-distance="0"
     class="spaced"
   >
     <div v-for="(page, i) in pages" :key="i">
@@ -11,6 +11,7 @@
         color="blue-grey"
         :key="i + 'card'"
         class="mx-auto"
+        flat
       >
         <v-list v-if="page !== undefined" three-line class="py-0">
           <template v-for="(post, index) in page">
@@ -144,6 +145,7 @@
           color="white"
           indeterminate
         ></v-progress-circular>
+
         <span v-else-if="pages[i] !== undefined && pages.length !== i + 1"
           >Page {{ i + 2 }}</span
         >

@@ -1,13 +1,7 @@
 <template>
   <section>
-    <v-app-bar
-      height="100%"
-      color="primary"
-      flat
-      fixed
-      :class="showScrollBtn ? 'hide' : ''"
-    >
-      <v-container>
+    <v-app-bar height="100%" color="primary" flat fixed class="pb-0">
+      <v-container class="pb-0">
         <v-row>
           <v-col>
             <transition-group name="slide-fade">
@@ -20,19 +14,20 @@
               >
                 Zoom Developer Search
               </div>
-              <searchbar key="2"></searchbar>
+              <searchbar id="searchbar" key="2"></searchbar>
             </transition-group>
           </v-col>
         </v-row>
       </v-container>
     </v-app-bar>
 
-    <v-container id="root" class="pt-12 mt-12">
+    <v-container id="root" class="title-margin">
       <v-row>
         <v-col>
-          <results></results>
+          <results id="results"></results>
           <v-fab-transition>
             <v-btn
+              id="scroll-to-top"
               v-show="showScrollBtn"
               color="accent"
               dark

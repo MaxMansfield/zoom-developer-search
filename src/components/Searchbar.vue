@@ -1,60 +1,66 @@
 <template>
-  <v-card
-    max-width="1024px"
-    class="mx-auto pa-2 pb-0"
-    elevation="4"
-    color="white"
-  >
+  <v-card max-width="1024px" class="mx-auto" elevation="6" color="white">
     <v-card-actions>
-      <v-text-field
-        :loading="searching"
-        :rules="[rules.length]"
-        @click:clear="clearQuery"
-        autocomplete="off"
-        autofocus
-        clearable
-        label="Search"
-        prepend-icon="mdi-magnify"
-        required
-        return-object
-        v-model="query"
-        @keyup="startDebounce"
-      ></v-text-field>
-      <v-menu bottom right nudge-right="25px" :close-on-content-click="false">
-        <template v-slot:activator="{ on, attrs }">
-          <v-btn icon v-bind="attrs" v-on="on">
-            <v-icon>mdi-dots-vertical</v-icon>
-          </v-btn>
-        </template>
+      <v-row class="mt-1">
+        <v-col cols="11">
+          <v-text-field
+            :loading="searching"
+            :rules="[rules.length]"
+            @click:clear="clearQuery"
+            autocomplete="off"
+            autofocus
+            clearable
+            label="Search"
+            prepend-icon="mdi-magnify"
+            required
+            return-object
+            v-model="query"
+            @keyup="startDebounce"
+          ></v-text-field>
+        </v-col>
+        <v-col>
+          <v-menu
+            bottom
+            right
+            nudge-right="25px"
+            :close-on-content-click="false"
+          >
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn icon large v-bind="attrs" v-on="on">
+                <v-icon>mdi-dots-vertical</v-icon>
+              </v-btn>
+            </template>
 
-        <v-list flat subheader three-line>
-          <v-subheader>Actions</v-subheader>
+            <v-list flat subheader three-line>
+              <v-subheader>Actions</v-subheader>
 
-          <v-list-item-group multiple active-class="">
-            <v-list-item @click="clearCache">
-              <template v-slot:default="{ active }">
-                <v-list-item-action>
-                  <v-btn
-                    @click="clearCache"
-                    icon
-                    color="primary"
-                    :input-value="active"
-                    ><v-icon>mdi-cached</v-icon></v-btn
-                  >
-                </v-list-item-action>
+              <v-list-item-group multiple active-class="">
+                <v-list-item @click="clearCache">
+                  <template v-slot:default="{ active }">
+                    <v-list-item-action>
+                      <v-btn
+                        @click="clearCache"
+                        icon
+                        color="primary"
+                        :input-value="active"
+                      >
+                        <v-icon>mdi-cached</v-icon>
+                      </v-btn>
+                    </v-list-item-action>
 
-                <v-list-item-content>
-                  <v-list-item-title>Start Fresh!</v-list-item-title>
-                  <v-list-item-subtitle
-                    >Clear the app and search data from your
-                    device</v-list-item-subtitle
-                  >
-                </v-list-item-content>
-              </template>
-            </v-list-item>
-          </v-list-item-group>
-        </v-list>
-      </v-menu>
+                    <v-list-item-content>
+                      <v-list-item-title>Start Fresh!</v-list-item-title>
+                      <v-list-item-subtitle
+                        >Clear the app and search data from your device
+                      </v-list-item-subtitle>
+                    </v-list-item-content>
+                  </template>
+                </v-list-item>
+              </v-list-item-group>
+            </v-list>
+          </v-menu>
+        </v-col>
+      </v-row>
     </v-card-actions>
   </v-card>
 </template>
@@ -90,7 +96,7 @@ export default {
         this.search();
         clearTimeout(this.typingTimer);
         this.typingTimer = null;
-      }, 250);
+      }, 500);
     },
     clearQuery() {
       this.query = "";

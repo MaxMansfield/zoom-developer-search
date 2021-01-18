@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <v-main>
+    <v-main id="main">
       <router-view></router-view>
       <v-snackbar v-model="updateAvailable" :timeout="-1" class="text-center">
         A new version of ZDS is available
