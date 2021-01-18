@@ -3,6 +3,7 @@
     v-infinite-scroll="scroll"
     infinite-scroll-disabled="searching"
     infinite-scroll-distance="25"
+    class="spaced"
   >
     <div v-for="(page, i) in pages" :key="i">
       <v-card
@@ -240,5 +241,9 @@ a,
 
 .v-icon:hover {
   text-decoration: none;
+}
+
+.spaced {
+  margin-top: 8vh;
 }
 </style>

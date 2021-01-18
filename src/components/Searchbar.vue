@@ -1,5 +1,10 @@
 <template>
-  <v-card max-width="1024px" class="mx-auto" color="white">
+  <v-card
+    max-width="1024px"
+    class="mx-auto pa-2 pb-0"
+    elevation="4"
+    color="white"
+  >
     <v-card-actions>
       <v-text-field
         :loading="searching"
