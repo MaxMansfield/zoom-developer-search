@@ -1,8 +1,8 @@
 <template>
   <section>
     <v-app-bar height="100%" color="primary" flat fixed class="pb-0">
-      <v-container class="pb-0">
-        <v-row>
+      <v-container class="pb-0" fluid>
+        <v-row class="mt-2">
           <v-col>
             <transition-group name="slide-fade">
               <div
@@ -10,7 +10,7 @@
                 key="1"
                 id="zds-title"
                 ref="zds-title"
-                class="text-center white--text font-weight-thin text-md-h2 text-lg-h2 text-h5 title-margin"
+                class="text-center white--text font-weight-thin text-md-h2 text-lg-h2 text-h5 mt-lg-12 mb-2 mb-lg-4 "
               >
                 Zoom Developer Search
               </div>
@@ -21,7 +21,7 @@
       </v-container>
     </v-app-bar>
 
-    <v-container id="root" class="title-margin">
+    <v-container id="root" class="mt-12 pt-12">
       <v-row>
         <v-col>
           <results id="results"></results>
@@ -73,7 +73,7 @@ export default {
   }),
   methods: {
     scroll() {
-      const threshold = 25;
+      const threshold = 100;
       this.showScrollBtn = window.scrollY > threshold;
     }
   }
@@ -93,10 +93,5 @@ export default {
   /* .slide-fade-leave-active below version 2.1.8 */ {
   transform: translateY(-35px);
   opacity: 0;
-}
-
-.title-margin {
-  margin-top: 7vh;
-  margin-bottom: 2vh;
 }
 </style>

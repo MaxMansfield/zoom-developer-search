@@ -1,7 +1,8 @@
 import { cacheAction } from "vuex-cache";
 
 const state = {
-  pagination: false
+  pagination: false,
+  forumPreview: true
 };
 
 const mutations = {
@@ -12,6 +13,14 @@ const mutations = {
    */
   SET_PAGINATION(state, isEnabled) {
     if (typeof isEnabled === "boolean") state.pagination = isEnabled;
+  },
+  /**
+   * Enable/disable the forum preview feature
+   * @param state the state to manipulate
+   * @param isEnabled set false to disable forum previews
+   */
+  SET_FORUM_PREVIEW(state, isEnabled) {
+    if (typeof isEnabled === "boolean") state.forumPreview = isEnabled;
   }
 };
 

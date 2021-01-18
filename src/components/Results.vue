@@ -39,10 +39,10 @@
                     </v-list-item-subtitle>
                   </v-col>
                   <v-col
-                    v-if="isDevTopic(post)"
+                    v-if="isDevTopic(post) && forumPreview"
                     cols="1"
                     xs="0"
-                    class="d-none d-sm-flex"
+                    class="d-none d-md-flex"
                   >
                     <v-list-item-action>
                       <v-badge
@@ -215,7 +215,8 @@ export default {
     ...mapState({
       searching: state => state.search.searching,
       pages: state => state.search.pages,
-      nextPage: state => state.search.nextPage
+      nextPage: state => state.search.nextPage,
+      forumPreview: state => state.settings.forumPreview
     })
   },
   filters: {

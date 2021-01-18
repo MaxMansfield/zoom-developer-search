@@ -2,7 +2,7 @@
   <v-card max-width="1024px" class="mx-auto" elevation="6" color="white">
     <v-card-actions>
       <v-row class="mt-1">
-        <v-col cols="11">
+        <v-col cols="9" sm="10" md="11">
           <v-text-field
             :loading="searching"
             :rules="[rules.length]"
@@ -32,6 +32,50 @@
             </template>
 
             <v-list flat subheader three-line>
+              <v-subheader>Settings</v-subheader>
+
+              <v-list-item-group multiple active-class="">
+                <!--                <v-list-item @click="pagination = !pagination">-->
+                <!--                  <template v-slot:default="{ active }">-->
+                <!--                    <v-list-item-action>-->
+                <!--                      <v-checkbox-->
+                <!--                        color="accent"-->
+                <!--                        :input-value="active"-->
+                <!--                        v-model="pagination"-->
+                <!--                        @click.prevent="pagination = !pagination"-->
+                <!--                      >-->
+                <!--                      </v-checkbox>-->
+                <!--                    </v-list-item-action>-->
+
+                <!--                    <v-list-item-content>-->
+                <!--                      <v-list-item-title>Pagination</v-list-item-title>-->
+                <!--                      <v-list-item-subtitle-->
+                <!--                        >Use pagination instead of infinite scrolling-->
+                <!--                      </v-list-item-subtitle>-->
+                <!--                    </v-list-item-content>-->
+                <!--                  </template>-->
+                <!--                </v-list-item>-->
+                <v-list-item @click.stop="forumPreview = !forumPreview">
+                  <template v-slot:default="{ active }">
+                    <v-list-item-action>
+                      <v-checkbox
+                        color="accent"
+                        :input-value="active"
+                        v-model="forumPreview"
+                        @click.prevent="forumPreview = !forumPreview"
+                      >
+                      </v-checkbox>
+                    </v-list-item-action>
+
+                    <v-list-item-content>
+                      <v-list-item-title>Forum Previews</v-list-item-title>
+                      <v-list-item-subtitle
+                        >Show previews of forum posts on large screens
+                      </v-list-item-subtitle>
+                    </v-list-item-content>
+                  </template>
+                </v-list-item>
+              </v-list-item-group>
               <v-subheader>Actions</v-subheader>
 
               <v-list-item-group multiple active-class="">
@@ -41,7 +85,7 @@
                       <v-btn
                         @click="clearCache"
                         icon
-                        color="primary"
+                        color="success"
                         :input-value="active"
                       >
                         <v-icon>mdi-cached</v-icon>
@@ -111,6 +155,22 @@ export default {
       },
       set(v) {
         this.$store.commit("search/SET_QUERY", v);
+      }
+    },
+    forumPreview: {
+      get() {
+        return this.$store.state.settings.forumPreview;
+      },
+      set(v) {
+        this.$store.commit("settings/SET_FORUM_PREVIEW", v);
+      }
+    },
+    pagination: {
+      get() {
+        return this.$store.state.settings.pagination;
+      },
+      set(v) {
+        this.$store.commit("settings/SET_PAGINATION", v);
       }
     },
     ...mapState({
