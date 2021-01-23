@@ -26,7 +26,7 @@
             :close-on-content-click="false"
           >
             <template v-slot:activator="{ on, attrs }">
-              <v-btn class="float-right " icon large v-bind="attrs" v-on="on">
+              <v-btn class="float-right" icon large v-bind="attrs" v-on="on">
                 <v-icon>mdi-dots-vertical</v-icon>
               </v-btn>
             </template>
@@ -34,7 +34,7 @@
             <v-list flat subheader three-line>
               <v-subheader>Settings</v-subheader>
 
-              <v-list-item-group multiple active-class="">
+              <v-list-item-group multiple>
                 <!--                <v-list-item @click="pagination = !pagination">-->
                 <!--                  <template v-slot:default="{ active }">-->
                 <!--                    <v-list-item-action>-->
