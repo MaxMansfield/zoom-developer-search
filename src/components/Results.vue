@@ -144,10 +144,19 @@
           :width="1"
           color="white"
           indeterminate
+          key="prog"
         ></v-progress-circular>
 
-        <span v-else-if="pages[i] !== undefined && pages.length !== i + 1"
+        <span
+          key="page"
+          v-else-if="pages[i] !== undefined && pages.length !== i + 1"
           >Page {{ i + 2 }}</span
+        >
+        <v-icon
+          key="down"
+          color="white"
+          v-else-if="resultsDisplayed < totalResults"
+          >mdi-chevron-down</v-icon
         >
       </div>
     </div>
@@ -211,6 +220,16 @@ export default {
     ...mapActions("search", ["search"])
   },
   computed: {
+    totalResults() {
+      if (this.nextPage === undefined) return;
+      console.log(this.resultsDisplayed);
+      return this.nextPage.totalResults;
+    },
+    resultsDisplayed() {
+      let ret = 0;
+      for (let i = 0; i < this.pages.length; i++) ret += this.pages[i].length;
+      return ret;
+    },
     ...mapGetters("search", ["hasNextPage"]),
     ...mapState({
       searching: state => state.search.searching,

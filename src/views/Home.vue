@@ -25,7 +25,7 @@
       </v-container>
     </v-app-bar>
 
-    <v-container id="root">
+    <v-container id="root" class="mt-12 pt-12 pt-lg-auto">
       <v-row>
         <v-col>
           <results id="results"></results>
@@ -85,7 +85,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 #root {
   margin-top: 5%;
 }
