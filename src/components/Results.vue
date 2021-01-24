@@ -222,7 +222,6 @@ export default {
   computed: {
     totalResults() {
       if (this.nextPage === undefined) return;
-      console.log(this.resultsDisplayed);
       return this.nextPage.totalResults;
     },
     resultsDisplayed() {
