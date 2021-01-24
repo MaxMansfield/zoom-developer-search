@@ -10,14 +10,16 @@
       class="pb-0 mb-0"
     >
       <v-container class="pb-0 mb-0" fluid>
-        <div
-          v-if="!showScrollBtn"
-          id="zds-title"
-          ref="zds-title"
-          class="text-center white--text font-weight-thin text-md-h2 text-lg-h2 text-h5 mt-lg-12 mb-2"
-        >
-          Zoom Developer Search
-        </div>
+        <transition name="slide-fade" translate="yes">
+          <div
+            v-if="!showScrollBtn"
+            id="zds-title"
+            ref="zds-title"
+            class="text-center white--text font-weight-thin text-md-h2 text-lg-h2 text-h5 mt-lg-12 mb-2"
+          >
+            Zoom Developer Search
+          </div>
+        </transition>
 
         <searchbar id="searchbar" key="2"></searchbar>
       </v-container>
@@ -76,7 +78,8 @@ export default {
   }),
   methods: {
     scroll() {
-      this.showScrollBtn = window.scrollY > this.threshold;
+      const scroll = window.scrollY;
+      this.showScrollBtn = scroll > this.threshold;
     }
   }
 };
@@ -85,5 +88,19 @@ export default {
 <style>
 #root {
   margin-top: 5%;
+}
+
+/* Enter and leave animations can use different */
+/* durations and timing functions.              */
+.slide-fade-enter-active {
+  transition: all 0.1s ease-out;
+}
+.slide-fade-leave-active {
+  transition: all 0.05s ease-out;
+}
+.slide-fade-enter, .slide-fade-leave-to
+  /* .slide-fade-leave-active below version 2.1.8 */ {
+  transform: translateY(-35px);
+  opacity: 0;
 }
 </style>
