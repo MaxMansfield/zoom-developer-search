@@ -1,27 +1,29 @@
 <template>
   <section>
-    <v-app-bar height="100%" color="primary" flat fixed class="pb-0">
-      <v-container class="pb-0" fluid>
-        <v-row class="mt-2">
-          <v-col>
-            <transition-group name="slide-fade">
-              <div
-                v-if="!showScrollBtn"
-                key="1"
-                id="zds-title"
-                ref="zds-title"
-                class="text-center white--text font-weight-thin text-md-h2 text-lg-h2 text-h5 mt-lg-12 mb-2 mb-lg-4 "
-              >
-                Zoom Developer Search
-              </div>
-              <searchbar id="searchbar" key="2"></searchbar>
-            </transition-group>
-          </v-col>
-        </v-row>
+    <v-app-bar
+      height="100%"
+      color="primary"
+      flat
+      fixed
+      :scroll-threshold="threshold"
+      hide-on-scroll
+      class="pb-0 mb-0"
+    >
+      <v-container class="pb-0 mb-0" fluid>
+        <div
+          v-if="!showScrollBtn"
+          id="zds-title"
+          ref="zds-title"
+          class="text-center white--text font-weight-thin text-md-h2 text-lg-h2 text-h5 mt-lg-12 mb-2"
+        >
+          Zoom Developer Search
+        </div>
+
+        <searchbar id="searchbar" key="2"></searchbar>
       </v-container>
     </v-app-bar>
 
-    <v-container id="root" class="mt-12 pt-12">
+    <v-container id="root">
       <v-row>
         <v-col>
           <results id="results"></results>
@@ -69,29 +71,19 @@ export default {
     Searchbar
   },
   data: () => ({
-    showScrollBtn: false
+    showScrollBtn: false,
+    threshold: 100
   }),
   methods: {
     scroll() {
-      const threshold = 100;
-      this.showScrollBtn = window.scrollY > threshold;
+      this.showScrollBtn = window.scrollY > this.threshold;
     }
   }
 };
 </script>
 
 <style>
-/* Enter and leave animations can use different */
-/* durations and timing functions.              */
-.slide-fade-enter-active {
-  transition: all 0.25s ease-in;
-}
-.slide-fade-leave-active {
-  transition: all 0.2s ease-out;
-}
-.slide-fade-enter, .slide-fade-leave-to
-  /* .slide-fade-leave-active below version 2.1.8 */ {
-  transform: translateY(-35px);
-  opacity: 0;
+#root {
+  margin-top: 5%;
 }
 </style>
