@@ -16,6 +16,7 @@
             return-object
             v-model="query"
             @keyup="startDebounce"
+            @keydown.enter="search"
           ></v-text-field>
         </v-col>
         <v-col>
@@ -137,15 +138,21 @@ export default {
       if (this.typingTimer !== null) clearTimeout(this.typingTimer);
 
       this.typingTimer = setTimeout(() => {
-        this.search();
-
-        if (this.$route.query.q !== this.query)
-          this.$router.replace({ query: { q: this.query } });
+        this.startSearch();
 
         // clear the timer
         clearTimeout(this.typingTimer);
         this.typingTimer = null;
       }, 500);
+    },
+    startSearch() {
+      if (this.searching) return;
+      this.search();
+      this.setRoute();
+    },
+    setRoute() {
+      if (this.$route.query.q !== this.query)
+        this.$router.replace({ query: { q: this.query } });
     },
     clearQuery() {
       this.query = "";
