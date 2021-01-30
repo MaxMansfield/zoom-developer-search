@@ -26,8 +26,8 @@ If you're using [Google App Engine](https://cloud.google.com/appengine), set up 
 use [variable substitutions](https://cloud.google.com/cloud-build/docs/configuring-builds/substitute-variable-values)
 for the following
 
-- `_ZDS_API_KEY`
-- `_ZDS_CX_TOKEN`
+- `ZDS_API_KEY`
+- `ZDS_CX_TOKEN`
 
 ### Install Packages
 

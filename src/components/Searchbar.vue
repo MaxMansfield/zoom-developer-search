@@ -138,6 +138,11 @@ export default {
 
       this.typingTimer = setTimeout(() => {
         this.search();
+
+        if (this.$route.query.q !== this.query)
+          this.$router.replace({ query: { q: this.query } });
+
+        // clear the timer
         clearTimeout(this.typingTimer);
         this.typingTimer = null;
       }, 500);
