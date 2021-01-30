@@ -31,8 +31,7 @@ export default V;
 Vue.use(VuetifyToast, {
   $vuetify: V.framework,
   x: "center",
-  timeout: 10000,
-  //showClose: true,
+  timeout: 5000,
   closeIcon: "mdi-close",
   closeText: ""
 });

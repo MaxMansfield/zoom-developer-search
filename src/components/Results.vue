@@ -19,13 +19,29 @@
               <v-list-item-content>
                 <v-row>
                   <v-col>
-                    <v-list-item-title class="text-wrap text-body-1 mb-xs-4"
-                      ><a
-                        class="text--darken-4"
-                        :href="post.link"
-                        v-html="`${post.htmlTitle}`"
-                      ></a
-                    ></v-list-item-title>
+                    <v-list-item-title class="text-wrap text-body-1 mb-xs-4">
+                      <v-row>
+                        <v-col cols="auto">
+                          <a
+                            class="text--darken-4"
+                            :href="post.link"
+                            v-html="`${post.htmlTitle}`"
+                          >
+                          </a>
+                        </v-col>
+                        <v-col cols="1" class="pl-0 ml-0">
+                          <v-btn
+                            class=" d-none d-sm-flex"
+                            icon
+                            x-small
+                            v-clipboard="post.link"
+                          >
+                            <v-icon x-small>mdi-link</v-icon>
+                          </v-btn>
+                        </v-col>
+                      </v-row>
+                    </v-list-item-title>
+
                     <a
                       :href="post.link"
                       class="caption grey--text d-none d-sm-flex"
@@ -187,20 +203,23 @@ export default {
       return this.getComments(item).length;
     },
     getComments(item) {
-      let posts = item.pagemap.discussionforumposting;
-      if (posts === undefined) return 0;
+      if (item.pagemap === undefined) return;
 
       let ret = [];
+      let posts = item.pagemap.discussionforumposting;
+      if (posts === undefined) return;
 
-      for (let i = 0; i < posts.length; i++) {
-        let post = posts[i];
-        let invalid = post.articlebody === undefined;
+      const fields = [
+        "articlebody",
+        "mainentityofpage",
+        "datepublished",
+        "position"
+      ];
 
-        invalid |= post.mainentityofpage === undefined;
-        invalid |= post.datepublished === undefined;
-        invalid |= post.position === undefined;
+      for (let post of posts) {
+        let valid = fields.every(field => post[field] !== undefined);
 
-        if (invalid) continue;
+        if (!valid) continue;
 
         const pos = post.position.replace("#", "");
         ret.push({
@@ -245,7 +264,7 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 a,
 .clickable {
   text-decoration: none;
